@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Study Planner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6fb;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #4f46e5;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 { color: #333; }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover { background: #4338ca; }
+    .plan { margin-top: 30px; }
+    .day {
+      background: #eef2ff;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Study Planner</h1>
+    <p>Intermediate Logic-Based Planner</p>
+  </header>
+
+  <div class="container">
+    <h2>Student Details</h2>
+
+    <label>Subjects (comma separated)</label>
+    <input type="text" id="subjects" placeholder="Maths, Physics, Chemistry" />
+
+    <label>Hours available per day</label>
+    <input type="number" id="hours" placeholder="4" />
+
+    <label>Difficulty Level</label>
+    <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+
+    <label>Study Days</label>
+    <select id="days">
+      <option value="5">5 Days</option>
+      <option value="7">7 Days</option>
+    </select>
+
+    <label>Goal</label>
+    <select id="goal">
+      <option value="revision">Revision</option>
+      <option value="exam">Exam Preparation</option>
+      <option value="concepts">Concept Building</option>
+    </select>
+
+    <button onclick="generatePlan()">Generate AI Study Plan</button>
+
+    <div class="plan" id="plan"></div>
+  </div>
+
+  <footer>© 2025 AI Study Planner | Intermediate Mini Project</footer>
+
+  <script>
+    function generatePlan() {
+      const subjects = document.getElementById('subjects').value.split(',').map(s => s.trim());
+      const hours = parseInt(document.getElementById('hours').value);
+      const difficulty = document.getElementById('difficulty').value;
+      const days = parseInt(document.getElementById('days').value);
+      const goal = document.getElementById('goal').value;
+      const planDiv = document.getElementById('plan');
+
+      if (subjects.length === 0 || !hours) {
+        alert('Please fill all details');
+        return;
+      }
+
+      planDiv.innerHTML = '<h2>Your AI Generated Study Plan</h2>';
+
+      let difficultyFactor = { easy: 1, medium: 1.2, hard: 1.5 }[difficulty];
+      let baseTime = (hours * difficultyFactor) / subjects.length;
+
+      for (let d = 1; d <= days; d++) {
+        let dayHTML = `<div class="day"><strong>Day ${d}</strong><p>Focus: ${goal}</p><ul>`;
+
+        subjects.forEach((sub, index) => {
+          let adjustedTime = (baseTime + index * 0.3).toFixed(1);
+          dayHTML += `<li>${sub} – ${adjustedTime} hrs</li>`;
+        });
+
+        dayHTML += '</ul><em>Tip: Take a 10 min break every hour</em></div>';
+        planDiv.innerHTML += dayHTML;
+      }
+    }
+  </script>
+</body>
+</html>
